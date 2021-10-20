@@ -1,6 +1,6 @@
 {
   "name": "homebridge-node-telussecurity-dot-com",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "Telus Smarthome Security plugin for Homebridge using Node.js",
   "author": "Prasoon Gupta <prasoon@outlook.com>",
   "license": "MIT",

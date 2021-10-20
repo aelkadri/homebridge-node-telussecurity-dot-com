@@ -47,7 +47,7 @@
     "homebridge": ">=0.4.21"
   },
   "dependencies": {
-    "node-telussecurity-dot-com": "^1.11.1",
+    "node-telussecurity-dot-com": "^1.11.3",
     "polling-to-event": "^2.1.0"
   },
   "devDependencies": {

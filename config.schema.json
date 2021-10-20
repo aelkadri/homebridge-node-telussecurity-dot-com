@@ -1,8 +1,8 @@
 {
-  "pluginAlias": "Alarmdotcom",
+  "pluginAlias": "Telussecuritydotcom",
   "pluginType": "platform",
   "singular": true,
-  "headerDisplay": "<h4><b>Alarm.com security system plugin using Node.js API</b></h4>",
+  "headerDisplay": "<h4><b>Telus Smarthome security system plugin using Node.js API</b></h4>",
   "schema": {
     "definitions": {
       "arming_obj": {
@@ -26,13 +26,13 @@
       "username": {
         "title": "<b>Username</b>",
         "type": "string",
-        "description": "Alarm.com login username, same as app.",
+        "description": "Telus Smarthome Security login username, same as app.",
         "required": true
       },
       "password": {
         "title": "<b>Password</b>",
         "type": "string",
-        "description": "Alarm.com login password, same as app.",
+        "description": "Telus Smarthome Security login password, same as app.",
         "required": true
       },
       "useMFA": {
@@ -65,16 +65,16 @@
         "title": "<b>Timeout to Re-Authenticate Session</b>",
         "type": "integer",
         "placeholder": 10,
-        "description": "(<u>WARNING:</u> choosing a time less than 10 minutes could possibly ban/disable your account from Alarm.com.)"
+        "description": "(<u>WARNING:</u> choosing a time less than 10 minutes could possibly ban/disable your account from smarthome-security.telus.com.)"
       },
       "pollTimeoutSeconds": {
         "title": "<b>Device Polling Interval<b>",
         "type": "integer",
         "placeholder": 60,
-        "description": "(<u>WARNING:</u> choosing a time less than 60 seconds could possibly ban/disable your account from Alarm.com.)"
+        "description": "(<u>WARNING:</u> choosing a time less than 60 seconds could possibly ban/disable your account from smarthome-security.telus.com.)"
       },
       "armingModes": {
-        "title": "<b>Alarm.com arming modes</b>.<p>Not all panels are compatible with silent arming. Enabling this without proper support will break thatt arming type.",
+        "title": "<b>Telus Smarthome Security arming modes</b>.<p>Not all panels are compatible with silent arming. Enabling this without proper support will break thatt arming type.",
         "type": "object",
         "properties": {
           "away": {
@@ -90,7 +90,7 @@
       },
       "ignoredDevices": {
         "title": "Ignored Devices",
-        "description": "IDs for Alarm.com accessories you wish to hide in Homekit.",
+        "description": "IDs for Telus Smarthome Security accessories you wish to hide in Homekit.",
         "type": "array",
         "maxItems": 0,
         "items": {

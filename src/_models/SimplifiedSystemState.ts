@@ -6,7 +6,7 @@ import {
   Relationships,
   SensorState,
   SystemAttributes
-} from 'node-alarm-dot-com';
+} from 'node-telussecurity-dot-com';
 
 export interface SimplifiedSystemState {
   partitions: PartitionState[],

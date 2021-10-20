@@ -30,7 +30,7 @@ jobs:
           CI: true
 
   publish-npm:
-    if: github.repository == 'node-alarm-dot-com/homebridge-node-alarm-dot-com'
+    if: github.repository == 'prsng/homebridge-node-telussecurity-dot-com'
 
     needs: build # only run if build succeeds
 

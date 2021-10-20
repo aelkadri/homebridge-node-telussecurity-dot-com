@@ -17,7 +17,7 @@ import {
   LOCK_STATES,
   SENSOR_STATES,
   SYSTEM_STATES
-} from 'node-alarm-dot-com/dist/_models/States';
+} from 'node-telussecurity-dot-com/dist/_models/States';
 
 import path from 'path';
 
@@ -39,14 +39,14 @@ import {
   LockState,
   SensorState,
   FlattenedSystemState, DeviceState
-} from 'node-alarm-dot-com';
+} from 'node-telussecurity-dot-com';
 
 import { SimplifiedSystemState } from './_models/SimplifiedSystemState';
 
 let hap: HAP;
-const PLUGIN_ID = 'homebridge-node-alarm-dot-com';
-const PLUGIN_NAME = 'Alarmdotcom';
-const MANUFACTURER = 'Alarm.com';
+const PLUGIN_ID = 'homebridge-node-telussecurity-dot-com';
+const PLUGIN_NAME = 'Telussecuritydotcom';
+const MANUFACTURER = 'Telus Smarthome Security';
 const AUTH_TIMEOUT_MINS = 10; // default for session authentication refresh
 const POLL_TIMEOUT_SECS = 60; // default for device state polling
 const LOG_LEVEL = 3; // default for log entries: 0 = NONE, 1 = ERROR, 2 = WARN, 3 = NOTICE, 4 = VERBOSE
@@ -181,9 +181,9 @@ class ADCPlatform implements DynamicPlatformPlugin {
         for (const device in res) {
           if (device === 'partitions' && typeof res[device][0] === 'undefined') {
             // throw error if no partition, ideally this should never occur
-            throw new Error('Received no partitions from Alarm.com');
+            throw new Error('Received no partitions from Telus Smarthome Security');
           } else if (res[device].length > 0) {
-            this.log.info(`Received ${res[device].length} ${device} from Alarm.com`);
+            this.log.info(`Received ${res[device].length} ${device} from Telus Smarthome Security`);
 
             res[device].forEach((d: DeviceState) => {
               const deviceType = d.type;
@@ -216,9 +216,9 @@ class ADCPlatform implements DynamicPlatformPlugin {
               }
             });
           } else {
-            this.log.debug(`Received no ${device} from Alarm.com. If you are expecting
-              ${device} in your Alarm.com setup, you may need to check that your
-              provider has assigned ${device} in your Alarm.com account`);
+            this.log.debug(`Received no ${device} from Telus Smarthome Security. If you are expecting
+              ${device} in your Telus Smarthome Security setup, you may need to check that your
+              provider has assigned ${device} in your Telus Smarthome Security account`);
           }
         }
 
@@ -277,7 +277,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
   async loginSession(): Promise<AuthOpts> {
     const now = +new Date();
     if (now > this.authOpts.expires) {
-      this.log.info(`Logging into Alarm.com as ${this.config.username}`);
+      this.log.info(`Logging into Telus Smarthome Security as ${this.config.username}`);
       //const authOpts = await login(this.config.username, this.config.password, this.mfaToken);
       await login(this.config.username, this.config.password, this.mfaToken)
         .then(authOpts => {
@@ -286,7 +286,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
           // Cache login response and estimated expiration time
           authOpts.expires = +new Date() + 1000 * 60 * this.config.authTimeoutMinutes;
           this.authOpts = authOpts;
-          this.log.info(`Logged into Alarm.com as ${this.config.username}`);
+          this.log.info(`Logged into Telus Smarthome Security as ${this.config.username}`);
         })
         .catch(err => {
           this.log.error(`loginSession Error: ${err.message}`);
@@ -425,7 +425,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Adds necessary parameters of the alarm panel for homebridge before passing
    * it to further setup methods.
    *
-   * @param {Object} partition  Passed in partition object from Alarm.com
+   * @param {Object} partition  Passed in partition object from Telus Smarthome Security
    */
   addPartition(partition): void {
     const id = partition.id;
@@ -501,7 +501,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Reports on the state of the alarm panel.
    *
    * @param accessory  The accessory representing the alarm panel.
-   * @param partition  The alarm panel parameters from Alarm.com.
+   * @param partition  The alarm panel parameters from Telus Smarthome Security.
    */
   statPartitionState(accessory: PlatformAccessory, partition): void {
     const id = accessory.context.accID;
@@ -605,7 +605,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Adds necessary parameters to a sensor for homebridge before passing it to
    * further setup methods.
    *
-   * @param {Object} sensor  Passed in sensor object from Alarm.com
+   * @param {Object} sensor  Passed in sensor object from Telus Smarthome Security
    */
   addSensor(sensor: SensorState): void {
     const id = sensor.id;
@@ -687,7 +687,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Reports on the state of the sensor accessory.
    *
    * @param accessory  The accessory representing a sensor.
-   * @param sensor  The sensor parameters from Alarm.com.
+   * @param sensor  The sensor parameters from Telus Smarthome Security.
    */
   statSensorState(accessory: PlatformAccessory, sensor: SensorState): void {
     const id = accessory.context.accID;
@@ -727,7 +727,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Adds necessary parameters to a light for homebridge before passing it to
    * further setup methods.
    *
-   * @param {Object} light  Passed in light object from Alarm.com.
+   * @param {Object} light  Passed in light object from Telus Smarthome Security.
    */
   addLight(light: LightState): void {
     const id = light.id;
@@ -819,7 +819,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Reports on the state of the light accessory.
    *
    * @param accessory  The accessory representing the light accessory.
-   * @param light  The light accessory parameters from Alarm.com.
+   * @param light  The light accessory parameters from Telus Smarthome Security.
    * @param callback
    */
   statLightState(accessory: PlatformAccessory, light: LightState, callback?: CharacteristicSetCallback): void {
@@ -849,7 +849,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
   }
 
   /**
-   * Change the physical state of a light using the Alarm.com API.
+   * Change the physical state of a light using the Telus Smarthome Security API.
    *
    * @param accessory  The light to be changed.
    * @param {number} brightness  The brightness of a light, from 0-100 (only
@@ -878,7 +878,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
   }
 
   /**
-   * Change the physical state of a light using the Alarm.com API.
+   * Change the physical state of a light using the Telus Smarthome Security API.
    *
    * @param accessory  The light to be changed.
    * @param {boolean} on  Value representing off or on states of the light.
@@ -886,7 +886,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    */
   async changeLight(accessory: PlatformAccessory, on: CharacteristicValue,
                     callback: CharacteristicSetCallback): Promise<void> {
-    // Alarm.com expects a single call for both brightness and 'on'
+    // Telus Smarthome Security expects a single call for both brightness and 'on'
     // We need to ignore the extra call when changing brightness from homekit.
     if (on === accessory.context.state) {
       callback();
@@ -926,7 +926,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Adds necessary parameters to a lock for homebridge before passing it to
    * further setup methods.
    *
-   * @param {Object} lock  Passed in lock object from Alarm.com.
+   * @param {Object} lock  Passed in lock object from Telus Smarthome Security.
    */
   addLock(lock: LockState): void {
     const id = lock.id;
@@ -1023,7 +1023,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
    * Reports on the state of the lock accessory.
    *
    * @param accessory  The accessory representing the lock accessory.
-   * @param lock  The lock accessory parameters from Alarm.com.
+   * @param lock  The lock accessory parameters from Telus Smarthome Security.
    */
   statLockState(accessory: PlatformAccessory, lock: LockState): void {
     const id = accessory.context.accID;
@@ -1055,7 +1055,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
   }
 
   /**
-   * Change the physical state of a lock using the Alarm.com API.
+   * Change the physical state of a lock using the Telus Smarthome Security API.
    *
    * @param accessory  The lock to be changed.
    * @param {boolean} value  Value representing locked or unlocked states of the
@@ -1212,7 +1212,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
   }
 
   /**
-   * Change the physical state of a garage using the Alarm.com API.
+   * Change the physical state of a garage using the Telus Smarthome Security API.
    *
    * @param accessory  The garage to be changed.
    * @param {boolean} value  Value representing opened or closed states of the
@@ -1344,7 +1344,7 @@ class ADCPlatform implements DynamicPlatformPlugin {
 }
 
 /**
- * Fetches all relationships for a system from Alarm.com
+ * Fetches all relationships for a system from Telus Smarthome Security
  *
  * @param res  Response object from loginSession().
  * @returns {Promise<[(number | bigint), number, number, number, number, number,
@@ -1355,9 +1355,9 @@ async function fetchStateForAllSystems(res: AuthOpts): Promise<FlattenedSystemSt
 }
 
 /**
- * Maps an Alarm.com alarm panel state to its counterpart.
+ * Maps an Telus Smarthome Security alarm panel state to its counterpart.
  *
- * @param state  The state as defined by Alarm.com.
+ * @param state  The state as defined by Telus Smarthome Security.
  * @returns {*}  The state as defines it.
  */
 function getPartitionState(state: number): number {
@@ -1377,9 +1377,9 @@ function getPartitionState(state: number): number {
 }
 
 /**
- * Maps an Alarm.com sensor state to its counterpart.
+ * Maps an Telus Smarthome Security sensor state to its counterpart.
  *
- * @param sensor  The state as defined by Alarm.com.
+ * @param sensor  The state as defined by Telus Smarthome Security.
  * @returns {*}  The state as defines it.
  */
 function getSensorState(sensor: SensorState): CharacteristicValue {
@@ -1403,9 +1403,9 @@ function getSensorState(sensor: SensorState): CharacteristicValue {
 }
 
 /**
- * Maps an Alarm.com light state to its counterpart.
+ * Maps an Telus Smarthome Security light state to its counterpart.
  *
- * @param state  The state as defined by Alarm.com.
+ * @param state  The state as defined by Telus Smarthome Security.
  * @returns {number|*}  The state as defines it.
  */
 function getLightState(state: number): CharacteristicValue {
@@ -1420,9 +1420,9 @@ function getLightState(state: number): CharacteristicValue {
 }
 
 /**
- * Maps an Alarm.com lock state to its counterpart.
+ * Maps an Telus Smarthome Security lock state to its counterpart.
  *
- * @param state  The state as defined by Alarm.com.
+ * @param state  The state as defined by Telus Smarthome Security.
  * @returns {number|*}  The state as defines it.
  */
 function getLockState(state: number): CharacteristicValue {
@@ -1437,9 +1437,9 @@ function getLockState(state: number): CharacteristicValue {
 }
 
 /**
- * Maps an Alarm.com garage state to its counterpart.
+ * Maps an Telus Smarthome Security garage state to its counterpart.
  *
- * @param state  The state as defined by Alarm.com.
+ * @param state  The state as defined by Telus Smarthome Security.
  * @returns {number|*}  The state as defines it.
  */
 function getGarageState(state: number): CharacteristicValue {
@@ -1454,9 +1454,9 @@ function getGarageState(state: number): CharacteristicValue {
 }
 
 /**
- * Maps an Alarm.com sensor type to its counterpart.
+ * Maps an Telus Smarthome Security sensor type to its counterpart.
  *
- * @param sensor  The type as defined by Alarm.com.
+ * @param sensor  The type as defined by Telus Smarthome Security.
  * @returns {}  An array with details about its type as defines it.
  */
 function getSensorType(sensor: SensorState): Array<any> {
@@ -1494,9 +1494,9 @@ function getSensorType(sensor: SensorState): Array<any> {
 }
 
 /**
- * Maps an Alarm.com sensor model to its type represented in homebridge/homekit.
+ * Maps an Telus Smarthome Security sensor model to its type represented in homebridge/homekit.
  *
- * @param model  The model as reported by Alarm.com.
+ * @param model  The model as reported by Telus Smarthome Security.
  * @returns {array}  An array with homebridge service and characteristic types.
  */
 function sensorModelToType(model: string): Array<any> {
